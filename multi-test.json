@@ -68,12 +68,12 @@
         {
             "only": ["amazon-ebs-1"],
             "type": "buildkite",
-            "prefix": "build-test-1"
+            "metadata_key_prefix": "build:test_a_ami"
         },
         {
             "only": ["amazon-ebs-2"],
             "type": "buildkite",
-            "prefix": "build-test-2"
+            "metadata_key_prefix": "build:test_b_ami"
         }
     ]
 }

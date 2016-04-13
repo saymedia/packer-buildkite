@@ -20,7 +20,7 @@ import (
 // Config options
 type Config struct {
 	common.PackerConfig `mapstructure:",squash"`
-	Prefix              string `mapstructure:"prefix"`
+	Prefix              string `mapstructure:"metadata_key_prefix"`
 	ctx                 interpolate.Context
 }
 
@@ -91,12 +91,12 @@ func (p *PostProcessor) PostProcess(ui packer.Ui, artifact packer.Artifact) (pac
 		parts := strings.SplitN(packedID, ":", 2)
 
 		idKeyName := "artifact_ami_id"
-		regionKeyName := "artifact_ami_id"
+		regionKeyName := "artifact_ami_region"
 
 		// override key names with an optional prefixed version
 		if p.config.Prefix != "" {
-			idKeyName = fmt.Sprintf("%s_%s", p.config.Prefix, idKeyName)
-			regionKeyName = fmt.Sprintf("%s_%s", p.config.Prefix, regionKeyName)
+			idKeyName = fmt.Sprintf("%s_id", p.config.Prefix)
+			regionKeyName = fmt.Sprintf("%s_region", p.config.Prefix)
 		}
 
 		metadata = append(metadata, buildkite.MetaData{
@@ -114,7 +114,7 @@ func (p *PostProcessor) PostProcess(ui packer.Ui, artifact packer.Artifact) (pac
 
 		// override key name with an optional prefixed version
 		if p.config.Prefix != "" {
-			idKeyName = fmt.Sprintf("%s_%s", p.config.Prefix, idKeyName)
+			idKeyName = fmt.Sprintf("%s_id", p.config.Prefix)
 		}
 
 		if id != "" {
