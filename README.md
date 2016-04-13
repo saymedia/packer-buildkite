@@ -8,6 +8,64 @@ job metadata store.
 It is still in a prototype-ish state and has not been tested in production.
 Use with caution, if at all!
 
+Usage
+-----
+Add the post-processor to your packer template:
+
+    {
+        "post-processors": [
+          {
+            "type": "buildkite",
+            "prefix": "example_a"
+          }
+        ]
+    }
+
+Check out [`multi-test.json`](./multi-test.json) for an example.
+
+Installation
+------------
+
+Run:
+
+    $ go get github.com/saymedia/packer-post-processor-buildkite
+    $ go install github.com/saymedia/packer-post-processor-buildkite
+
+Add the post-processor to ~/.packerconfig:
+
+    {
+      "post-processors": {
+        "buildkite": "packer-post-processor-buildkite"
+      }
+    }
+
+Tests
+-----
+
+### STEP 0:
+
+Install packer-post-processor-buildkite as detailed above.
+
+### STEP 1:
+
+Create a file called `multi-test-variables.json` with the contents similar to (use your own AWS values of course):
+
+    {
+        "AWS_VPC_ID": "vpc-2421cc41",
+        "AWS_SUBNET_ID": "subnet-49f75e2c",
+        "AWS_SG_ID": "sg-9a57f80a",
+        "AWS_AMI_ID": "ami-cb9d728f",
+        "AWS_REGION": "us-west-1"
+    }
+
+### STEP 2:
+
+Run:
+  
+    $ export AWS_ACCESS_KEY='<YOUR_AWS_ACCESS_KEY>'
+    $ export AWS_SECRET_KEY='<YOUR_AWS_SECRET_KEY>'
+    $ BUILDKITE_AGENT_ACCESS_TOKEN='<YOUR_BUILDKITE_AGENT_ACCESS_TOKEN>' BUILDKITE_JOB_ID='<YOUR_BUILDKITE_JOB_ID>' BUILDKITE_AGENT_ENDPOINT=https://agent.buildkite.com/v3 ./test.sh
+
 License
 -------
 

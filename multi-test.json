@@ -1,0 +1,79 @@
+{
+    "variables": {
+        "AWS_ACCESS_KEY": "{{ env `AWS_ACCESS_KEY` }}",
+        "AWS_SECRET_KEY": "{{ env `AWS_SECRET_KEY` }}",
+        "BUILDKITE_AGENT_ENDPOINT": "api.buildkite.com",
+        "BUILDKITE_AGENT_ACCESS_TOKEN": "test-token"
+    },
+    "builders": [
+        {
+            "name":             "amazon-ebs-1",
+            "type":             "amazon-ebs",
+            "vpc_id":           "{{user `AWS_VPC_ID`}}",
+            "subnet_id":        "{{user `AWS_SUBNET_ID`}}",
+            "security_group_ids":["{{user `AWS_SG_ID`}}"],
+            "ami_name":         "Test Ubuntu {{timestamp}} 1",
+            "ami_description":  "Test Ubuntu Image",
+
+            "access_key":       "{{user `AWS_ACCESS_KEY`}}",
+            "secret_key":       "{{user `AWS_SECRET_KEY`}}",
+
+            "region":           "{{user `AWS_REGION`}}",
+            "instance_type":    "t2.micro",
+            "source_ami":       "{{user `AWS_AMI_ID`}}",
+            "ssh_username":     "ubuntu",
+            "associate_public_ip_address": true,
+            "ssh_timeout" :     "2m",
+            "run_tags": {
+                "Name": "base-ubuntu build test",
+                "Base": "base-ubuntu",
+                "Builder": "packer"
+            }
+        },
+        {
+            "name":             "amazon-ebs-2",
+            "type":             "amazon-ebs",
+            "vpc_id":           "{{user `AWS_VPC_ID`}}",
+            "subnet_id":        "{{user `AWS_SUBNET_ID`}}",
+            "security_group_ids":["{{user `AWS_SG_ID`}}"],
+            "ami_name":         "Test Ubuntu {{timestamp}} 2",
+            "ami_description":  "Test Ubuntu Image",
+
+            "access_key":       "{{user `AWS_ACCESS_KEY`}}",
+            "secret_key":       "{{user `AWS_SECRET_KEY`}}",
+
+            "region":           "{{user `AWS_REGION`}}",
+            "instance_type":    "t2.micro",
+            "source_ami":       "{{user `AWS_AMI_ID`}}",
+            "ssh_username":     "ubuntu",
+            "associate_public_ip_address": true,
+            "ssh_timeout" :     "2m",
+            "run_tags": {
+                "Name": "base-ubuntu build test",
+                "Base": "base-ubuntu",
+                "Builder": "packer"
+            }
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline": [
+                "echo foo",
+                "touch /tmp/test"
+            ]
+        }
+    ],
+    "post-processors": [
+        {
+            "only": ["amazon-ebs-1"],
+            "type": "buildkite",
+            "metadata_key_prefix": "build:test_a_ami"
+        },
+        {
+            "only": ["amazon-ebs-2"],
+            "type": "buildkite",
+            "metadata_key_prefix": "build:test_b_ami"
+        }
+    ]
+}
