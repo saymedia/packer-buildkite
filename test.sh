@@ -51,7 +51,7 @@ fi
 
 
 # Run
-BUILDKITE_AGENT_ENDPOINT=https://agent.buildkite.com/v3 TMPDIR=~/tmp $GOPATH/bin/packer build -var-file=../multi-test-variables.json ../multi-test.json
+$GOPATH/bin/packer build -var-file=../multi-test-variables.json ../multi-test.json
 if [[ $? != 0 ]]; then
     exit 1
 fi
