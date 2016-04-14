@@ -1,2 +1,3 @@
 packer-post-processor-buildkite/packer-post-processor-buildkite
+packer-post-processor-buildkite/packer-buildkite-linux-amd64*
 multi-test-variables.json

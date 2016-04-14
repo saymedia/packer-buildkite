@@ -49,6 +49,15 @@ if [[ $? != 0 ]]; then
     exit 1
 fi
 
+# Build for Ubuntu servers
+GOARCH=amd64 GOOS=linux go build -o packer-buildkite-linux-amd64/packer-post-processor-buildkite
+if [[ $? != 0 ]]; then
+    exit 1
+fi
+
+# Zip up for a release
+zip packer-buildkite-linux-amd64.zip packer-buildkite-linux-amd64/packer-post-processor-buildkite
+
 
 # Run
 $GOPATH/bin/packer build -var-file=../multi-test-variables.json ../multi-test.json
