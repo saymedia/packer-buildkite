@@ -56,7 +56,9 @@ if [[ $? != 0 ]]; then
 fi
 
 # Zip up for a release
-zip packer-buildkite-linux-amd64.zip packer-buildkite-linux-amd64/packer-post-processor-buildkite
+cd packer-buildkite-linux-amd64
+zip ../packer-buildkite-linux-amd64.zip packer-post-processor-buildkite
+cd ..
 
 
 # Run
