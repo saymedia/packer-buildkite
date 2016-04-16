@@ -61,8 +61,14 @@ zip ../packer-buildkite-linux-amd64.zip packer-post-processor-buildkite
 cd ..
 
 
-# Run
+# Run with Buildkite turned off
 $GOPATH/bin/packer build -var-file=../multi-test-variables.json ../multi-test.json
+if [[ $? != 0 ]]; then
+    exit 1
+fi
+
+# Run with Buildkite turned on
+BUILDKITE="true" $GOPATH/bin/packer build -var-file=../multi-test-variables.json ../multi-test.json
 if [[ $? != 0 ]]; then
     exit 1
 fi

@@ -74,6 +74,12 @@ func (p *PostProcessor) Configure(raws ...interface{}) error {
 // PostProcess sends the Artifact to Buildkite
 func (p *PostProcessor) PostProcess(ui packer.Ui, artifact packer.Artifact) (packer.Artifact, bool, error) {
 
+	buildkiteEnabled := os.Getenv("BUILDKITE")
+	if buildkiteEnabled != "true" {
+		ui.Message("This Packer build is not run within Buildkite. Skipping the BuildKite post-processor.")
+		return artifact, true, nil
+	}
+
 	client := p.client.Create()
 
 	metadata := make([]buildkite.MetaData, 0, 2)
