@@ -1,12 +1,11 @@
 packer-buildkite
 ================
 
-This is an **experimental** [Packer](https://packer.io/) post-processor plugin
-which will write id of an artifact into the [BuildKite](https://buildkite.com/)
+This is an [Packer](https://packer.io/) post-processor plugin
+which will write id of an artifact into the [Buildkite](https://buildkite.com/)
 job metadata store.
 
-It is still in a prototype-ish state and has not been tested in production.
-Use with caution, if at all!
+This has been used as part of the application build pipeline at [Say Media](https://www.saymedia.com/).
 
 Usage
 -----
